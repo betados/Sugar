@@ -3,18 +3,22 @@ import random
 
 
 class Grain:
-    # normal = 0.0001
+    g = 0.00002
+
     def __init__(self, screen):
         self.pos = [400, 0]
         self.vel = [0, 0.00]
         self.accel = [0, 0]
         self.screen = screen
         self.color = 150, 155, 155
-        self.side = 3
+        self.side = 6
         self.isInFloor = False
+        self.forceList = []
 
         self.mass = self.side * self. side
-        self.force = [0, 0.0001]
+        self.force = [0, 0]
+
+        self.forceList.append([0, self.mass * Grain.g])
 
     def draw(self, t):
         self.actualize(t)
@@ -24,15 +28,21 @@ class Grain:
 
 
         for i in range(2):
+            # force sum
+            self.force = [0, 0]
+            for force in self.forceList:
+                self.force[i] += force[i]
+
+
             self.accel[i] = self.force[i]/self.mass
             # movement equations
             self.vel[i] += self.accel[i] * t
             self.pos[i] += self.vel[i] * t + 0.5 * self.accel[i] * t * t
 
-        # random horizontal drift
         if self.isInFloor:
             self.vel[0]=0
         else:
+            # random horizontal drift
             self.vel[0] += random.randrange(-10, 10)/25000
 
         # TODO ¿rozamiento viscoso?
@@ -41,9 +51,11 @@ class Grain:
         return self.side/2
 
     def setFloorTouch(self):
-        self.vel[1] = 0
-        self.force[1] = 0
-        self.isInFloor = True
+        if not self.isInFloor:
+            self.vel[1] = 0
+            # self.force[1] = 0
+            self.isInFloor = True
+            self.forceList.append([0, -self.mass * Grain.g])
 
     def getVel(self):
         return self.vel

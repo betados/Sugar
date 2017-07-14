@@ -3,7 +3,7 @@ import math
 
 class Interaction:
     def __init__(self, resolution):
-        self.floor = resolution[1]/3
+        self.floor = 2*resolution[1]/3
 
     def check(self, grainList):
 
@@ -23,7 +23,7 @@ class Interaction:
                 grain1.setFloorTouch()
 
     def touching(self, g1, g2):
-        if self.distance(g1, g2) <= (g1.getRadio()+g2.getRadio() )*0.3:
+        if self.distance(g1, g2) <= (g1.getRadio()+g2.getRadio() )*0.1:
             return True
         else:
             return False

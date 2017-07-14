@@ -49,10 +49,12 @@ while not done:
     if keys[pygame.K_ESCAPE]:
         done = True
 
-    if len(grainList) < 500:
+    if len(grainList) < 50:
         grainList.append(Grain(screen))
     t = clock.get_time()
     interaction.check(grainList)
+
+    print(grainList[0].force)
 
     # --- DRAW CODE
     for grain in grainList:
@@ -61,7 +63,7 @@ while not done:
     pygame.display.flip()
 
     # --- (frames per second)
-    clock.tick(25)
+    clock.tick(15)
 
 # close
 pygame.quit()
