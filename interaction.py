@@ -1,8 +1,10 @@
 import math
 
+
 class Interaction:
     def __init__(self, resolution):
         self.floor = resolution[1]/3
+
     def check(self, grainList):
 
         for grain1 in grainList:
@@ -11,18 +13,27 @@ class Interaction:
             for grain2 in grainList:
                 if grain1 == grain2:
                     continue
-                if self.touching(grain1,grain2):
-                    grain1.color = 255, 0, 0
+                if self.touching(grain1, grain2):
+                    grain1.color = 100, 0, 0
+                    # higher = self.theHigherOne(grain1, grain2)
+                    # higher[0].setVel(higher[1].getVel())
 
             # With the floor
             if grain1.pos[1] >= self.floor:
-                grain1.vel[1] = 0
+                grain1.setFloorTouch()
 
     def touching(self, g1, g2):
-        if self.distance(g1, g2) <= (g1.getRadio()+g2.getRadio() )*0.5:
+        if self.distance(g1, g2) <= (g1.getRadio()+g2.getRadio() )*0.3:
             return True
         else:
             return False
 
-    def distance(self, g1, g2):
-        return math.sqrt(math.pow(g2.pos[0]-g1.pos[0], 2) +  math.pow(g2.pos[1]-g1.pos[1], 2) )
+    def theHigherOne(self, g1, g2):
+        if g1.getPos()[1] < g2.getPos()[1]:
+            return [g1, g2]
+        else:
+            return [g2, g1]
+
+    @staticmethod
+    def distance(g1, g2):
+        return math.sqrt(math.pow(g2.pos[0]-g1.pos[0], 2) + math.pow(g2.pos[1]-g1.pos[1], 2))

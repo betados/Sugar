@@ -29,7 +29,6 @@ while not done:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pass
 
-
     # --- GAME LOGIC
     keys = pygame.key.get_pressed()
 
@@ -50,13 +49,10 @@ while not done:
     if keys[pygame.K_ESCAPE]:
         done = True
 
-
     if len(grainList) < 500:
         grainList.append(Grain(screen))
     t = clock.get_time()
     interaction.check(grainList)
-
-
 
     # --- DRAW CODE
     for grain in grainList:
