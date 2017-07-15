@@ -3,6 +3,7 @@
 
 
 import pygame
+from pygame.locals import *
 from grain import Grain
 from interaction import Interaction
 
@@ -13,8 +14,12 @@ pygame.display.set_caption('Sugar')
 screen = pygame.display.set_mode(resolution)
 done = False
 
+creationPeriod = 300
+grainQuantity = 500
+
 interaction = Interaction(resolution)
 grainList = []
+pygame.time.set_timer(USEREVENT+1, creationPeriod)
 
 while not done:
 
@@ -26,6 +31,9 @@ while not done:
     for event in events:
         if event.type == pygame.QUIT:
             done = True
+        if event.type == USEREVENT + 1:
+            if len(grainList) < grainQuantity:
+                grainList.append(Grain(screen))
         if event.type == pygame.MOUSEBUTTONDOWN:
             pass
 
@@ -48,13 +56,15 @@ while not done:
     # exit
     if keys[pygame.K_ESCAPE]:
         done = True
-
-    if len(grainList) < 50:
-        grainList.append(Grain(screen))
     t = clock.get_time()
+    # print(t)
+    # print(tTotal)
+
+
+
     interaction.check(grainList)
 
-    print(grainList[0].force)
+    # print(grainList[0].force)
 
     # --- DRAW CODE
     for grain in grainList:
@@ -63,7 +73,7 @@ while not done:
     pygame.display.flip()
 
     # --- (frames per second)
-    clock.tick(15)
+    clock.tick(25)
 
 # close
 pygame.quit()

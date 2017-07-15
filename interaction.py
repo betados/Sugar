@@ -14,16 +14,18 @@ class Interaction:
                 if grain1 == grain2:
                     continue
                 if self.touching(grain1, grain2):
-                    grain1.color = 100, 0, 0
-                    # higher = self.theHigherOne(grain1, grain2)
-                    # higher[0].setVel(higher[1].getVel())
+                    higher = self.theHigherOne(grain1, grain2)
+                    if higher[1].isInFloor:
+                        # grain1.color = 100, 0, 0
+                        # grain2.color = 100, 0, 0
+                        higher[0].setFloorTouch()
 
             # With the floor
             if grain1.pos[1] >= self.floor:
                 grain1.setFloorTouch()
 
     def touching(self, g1, g2):
-        if self.distance(g1, g2) <= (g1.getRadio()+g2.getRadio() )*0.1:
+        if self.distance(g1, g2) <= (g1.getRadio()+g2.getRadio() ):
             return True
         else:
             return False

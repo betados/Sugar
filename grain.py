@@ -11,7 +11,7 @@ class Grain:
         self.accel = [0, 0]
         self.screen = screen
         self.color = 150, 155, 155
-        self.side = 6
+        self.side = 7
         self.isInFloor = False
         self.forceList = []
 
