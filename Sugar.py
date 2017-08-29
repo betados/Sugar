@@ -14,8 +14,8 @@ pygame.display.set_caption('Sugar')
 screen = pygame.display.set_mode(resolution)
 done = False
 
-creationPeriod = 2000
-grainQuantity = 100
+creationPeriod = 500
+grainQuantity = 99
 
 interaction = Interaction(resolution)
 grainList = []
@@ -62,14 +62,22 @@ while not done:
     # print(tTotal)
 
 
+    try:
+        interaction.check(grainList)
+    except Exception as e:
+            # FIXME arreglar los overflows que dan algunos granos
+            print("Al interactuar: "+str(e))
 
-    interaction.check(grainList)
 
     # print(grainList[0].force)
 
     # --- DRAW CODE
     for grain in grainList:
-        grain.draw(t)
+        try:
+            grain.draw(t)
+        except Exception as e:
+            # FIXME arreglar los overflows que dan algunos granos
+            print("Al pintar: "+str(e))
     # print(t)
     pygame.display.flip()
 
