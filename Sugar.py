@@ -14,26 +14,27 @@ pygame.display.set_caption('Sugar')
 screen = pygame.display.set_mode(resolution)
 done = False
 
-creationPeriod = 300
-grainQuantity = 500
+creationPeriod = 2000
+grainQuantity = 100
 
 interaction = Interaction(resolution)
 grainList = []
 pygame.time.set_timer(USEREVENT+1, creationPeriod)
 
+# --- MAIN LOOP
 while not done:
 
     screen.fill((0, 0, 0))
     events = pygame.event.get()
     keys = pygame.key.get_pressed()
 
-    # --- MAIN LOOP
     for event in events:
         if event.type == pygame.QUIT:
             done = True
         if event.type == USEREVENT + 1:
             if len(grainList) < grainQuantity:
                 grainList.append(Grain(screen))
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             pass
 
@@ -49,8 +50,8 @@ while not done:
     # if keys[pygame.K_s]:
     #     # x=x-0.2
     #     avance = avance[0]-1, avance[1]
-    # if keys[pygame.K_d]:
-    #     # y=y-0.2
+    if keys[pygame.K_f]:
+        print(grainList[0].lastForceList)
     #     avance = avance[0], avance[1]-1
 
     # exit
