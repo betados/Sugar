@@ -4,6 +4,7 @@ import math
 class Interaction:
     def __init__(self, resolution):
         self.floor = 1*resolution[1]/3
+        self.umbralRozamientoEstatico = 0.01
 
     def check(self, grainList):
 
@@ -25,7 +26,7 @@ class Interaction:
                         pass
                     # FIXME solo afectan los de abajo para arriba, abria que hacerlo bidireccional
                     higher.forceList.append(self.unitVector(higher, lower))
-                    # lower.forceList.append(self.unitVector(lower, higher))
+                    lower.forceList.append(self.unitVector(lower, higher))
                     grain1.isTouching = True
                     grain2.isTouching = True
                 else:
@@ -35,6 +36,8 @@ class Interaction:
             # With the floor
             if grain1.pos[1] >= self.floor:
                 grain1.setFloorTouch()
+                deformacion = self.floor - grain1.pos[1]
+                grain1.forceList.append([0, deformacion*0.05])
             else:
                 grain1.setNotFloor()
 
@@ -59,14 +62,29 @@ class Interaction:
         if modulo != 0:
             unitVector= [vector[0] / modulo, vector[1] / modulo]
             deformacion = higher.getRadio()*2 - self.distance(higher, lower)
-            deformacion = deformacion *0.05
+            deformacion = deformacion *0.005
             if deformacion < 0:
                 deformacion = deformacion*-1
             fuerza = [unitVector[0] * deformacion, unitVector[1] * deformacion]
 
+            fuerza[0] = self.rozamientoEstatico(higher, fuerza[0])
+
             return fuerza
         else:
             return [0, 0]
+
+    def rozamientoEstatico(self, grain, fuerza):
+        multiplicador = 1
+        if True:#grain.isInFloor:
+            force = fuerza
+            if force < 0:
+                multiplicador =  -1
+                force = force * -1
+            if force<self.umbralRozamientoEstatico:
+                fuerza = 0
+            else:
+                fuerza = fuerza - self.umbralRozamientoEstatico * multiplicador
+        return fuerza
 
     @staticmethod
     def distance(g1, g2):

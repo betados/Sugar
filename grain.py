@@ -12,11 +12,12 @@ class Grain:
         self.accel = [0, 0]
         self.screen = screen
         self.color = 77, 77, 77
-        self.side = 8
+        self.side = 10
         self.isInFloor = False
         self.wasInFloor = False
         self.isTouching = False
         self.forceList = []
+
 
         self.mass = self.side * self.side
         self.force = [0, 0]
@@ -35,8 +36,8 @@ class Grain:
 
 
         pygame.draw.rect(self.screen, self.color, (self.pos[0]-self.side/2, self.pos[1]-self.side/2, self.side, self.side), 2)
-        # for force in self.forceList:
-        #     pygame.draw.aaline(self.screen, self.color, self.pos, [self.pos[0]+force[0]*1000,self.pos[1]+force[1]*1000 ] )
+        for force in self.forceList:
+            pygame.draw.aaline(self.screen, self.color, self.pos, [self.pos[0]+force[0]*1000,self.pos[1]+force[1]*1000 ] )
         self.forceList = []
 
     def actualize(self, t):
@@ -54,7 +55,6 @@ class Grain:
             self.force = [0, 0]
             for force in self.forceList:
                 self.force[i] += force[i]
-
 
             self.accel[i] = self.force[i]/self.mass
             # movement equations
@@ -77,9 +77,13 @@ class Grain:
                 mult[i] = mult[i] * 50
             else:
                 if self.isInFloor:
-                    mult[i] = mult[i] * 5
+                    mult[i] = mult[i] * 10
 
         return [math.pow(self.vel[0], 2)*mult[0], math.pow(self.vel[1], 2)*mult[1]]
+
+
+
+
 
 
     def getRadio(self):
@@ -88,12 +92,12 @@ class Grain:
     def checkFloor(self):
         if self.isInFloor and not self.wasInFloor:
             # FIXME esto es un apaño que frena el grano cuando este toca el suelo
-            self.vel[1] = 0
+            # self.vel[1] = 0
             self.wasInFloor = True
         if self.isInFloor:
-            self.vel[1] = 0
-            self.forceList.append([0, -self.mass * Grain.g])
-
+            # self.vel[1] = 0
+            # self.forceList.append([0, -self.mass * Grain.g])
+            pass
     def setFloorTouch(self):
         self.isInFloor = True
 

@@ -15,7 +15,7 @@ screen = pygame.display.set_mode(resolution)
 done = False
 
 creationPeriod = 500
-grainQuantity = 99
+grainQuantity = 50
 
 interaction = Interaction(resolution)
 grainList = []
